@@ -1,11 +1,13 @@
 require("dotenv").config();
 const express = require("express");
+const morgan = require("morgan");
 const redisClient = require("./redis");
 const cacheMiddleware = require("./redis.middleware");
 const fakeData = require("./fakeData/data");
 const app = express();
 const PORT = process.env.PORT ?? 3001;
 
+app.use(morgan("tiny"));
 app.use(express.json());
 
 app.get("/:id", cacheMiddleware.checkCache, async (req, res) => {

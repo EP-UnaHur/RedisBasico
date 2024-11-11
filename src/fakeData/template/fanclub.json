@@ -24,9 +24,10 @@
           "France",
           "Australia",
           "Germany",
+          "Artengina",
           { "$country": { "full": true } }
         ],
-        "weights": [20, 3, 2, 1, 1, 1]
+        "weights": [3, 3, 2, 1, 1, 1, 20]
       }
     }
   },
