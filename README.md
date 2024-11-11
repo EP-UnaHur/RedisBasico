@@ -1,6 +1,6 @@
 # EP - Cache con Redis
 
-## Qúe es Redis
+## Qué es Redis
 
 Redis es una base de datos en memoria que permite almacenar datos de manera muy rápida y eficiente, y es ampliamente utilizada para caching, o almacenamiento en caché. La caché es una técnica que guarda temporalmente datos para reducir el tiempo y el costo de obtener información desde una base de datos principal, especialmente cuando se requiere acceder a esos datos de forma repetida.
 
@@ -18,7 +18,7 @@ En un escenario típico de uso de Redis como caché, el flujo funciona de la sig
 
 - **_prime cache_**: Una vez que el repositorio/servico devuelve el dato solicitado, este se guarda en Redis para que, en futuras solicitudes, esté disponible directamente en la caché. Este proceso se llama "prime cache" o "inicializar la caché".
 
-La ventaja de este flujo es que Redis almacena datos en memoria, lo que permite tiempos de respuesta rápidos. Así, Redis reduce la cantidad de consultas que necesita hacer a las base de datos persistent o servicios externos, mejorando el rendimiento general del sistema e incluso ahorrando costos.
+La ventaja de este flujo es que Redis almacena datos en memoria, lo que permite tiempos de respuesta rápidos. Así, Redis reduce la cantidad de consultas que necesita hacer a las base de datos persistente o servicios externos, mejorando el rendimiento general del sistema e incluso ahorrando costos.
 
 ### TTL (Time To Live)
 
