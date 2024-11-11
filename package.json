@@ -16,6 +16,7 @@
     "redis": "^4.7.0"
   },
   "devDependencies": {
+    "mgeneratejs": "^0.7.1",
     "nodemon": "^3.1.7"
   }
 }

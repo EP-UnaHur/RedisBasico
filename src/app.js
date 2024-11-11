@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const redisClient = require("./redis");
 const cacheMiddleware = require("./redis.middleware");
+const fakeData = require("./fakeData/data");
 const app = express();
 const PORT = process.env.PORT ?? 3001;
 
@@ -20,19 +21,9 @@ app.delete("/:id", cacheMiddleware.deleteCache, async (req, res) => {
 
 const queryQueTarda = (id) => {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        userId: id,
-        first_name: "Gerardo",
-        last_name: "Gonzalez",
-        address: {
-          street: "140 RioBamba",
-          zip_code: 223,
-          city: "Buenos Aires",
-          country: "Arg",
-        },
-      });
-    }, 2500);
+    setTimeout(async () => {
+      resolve(await fakeData(id));
+    }, 2000);
   });
 };
 
