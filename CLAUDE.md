@@ -19,14 +19,14 @@ npm run dev          # nodemon src/app.js
 
 There is no test suite (`npm test` is a stub that exits 1) and no linter configured.
 
-A `.env` is committed (this is a throwaway demo). Variables: `PORT`, `REDIS_URL`, `REDIS_PASSWORD`. `REDIS_PASSWORD` has no fallback in `redis.js`, so it must be set in `.env` for the client to authenticate against the password-protected Redis from `docker-compose.yml`.
+A `.env` is committed (this is a throwaway demo). Variables: `PORT`, `REDIS_URL`, `REDIS_PASSWORD`, `CACHE_TTL_SEGUNDOS` (cache TTL, default 60), `DEMORA_QUERY_MS` (simulated slow-query delay, default 2000). `REDIS_PASSWORD` has no fallback in `redis.js`, so it must be set in `.env` for the client to authenticate against the password-protected Redis from `docker-compose.yml`.
 
 ## Architecture
 
 Request flow for `GET /:id`, wired in `src/app.js`:
 
 1. **`cacheMiddleware.checkCache`** (`src/redis.middleware.js`) runs first. It does `client.get(id)`; on a hit it responds `200` with the cached JSON and the route handler never runs (**cache hit**).
-2. On a miss, the route handler calls `queryQueTarda(id)` — a `setTimeout`-based 2-second fake of a slow DB/service — then `redisClient.set(id, ..., { EX: 60 })` to **prime the cache** with a 60s TTL, and responds.
+2. On a miss, the route handler calls `queryQueTarda(id)` — a `setTimeout`-based fake of a slow DB/service (`DEMORA_QUERY_MS`, default 2s) — then `redisClient.set(id, ..., { EX: CACHE_TTL_SEGUNDOS })` to **prime the cache** (default 60s TTL), and responds. Errors are forwarded via `next(err)` to a centralized error handler that returns `500`.
 3. `DELETE /:id` runs `cacheMiddleware.deleteCache` (`client.del(id)`) to invalidate, then returns `204`.
 
 Key points:

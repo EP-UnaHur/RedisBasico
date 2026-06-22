@@ -44,7 +44,7 @@ Por ejemplo, si un dato en la caché tiene un TTL de 5 minutos, Redis lo elimina
 
 ## Cómo funciona esta demo
 
-Para que el ejemplo sea reproducible sin una base de datos real, se simula una **consulta lenta** (`queryQueTarda`) que tarda **2 segundos** en responder y genera datos falsos. Sobre esa consulta lenta aplicamos el patrón cache-aside:
+Para que el ejemplo sea reproducible sin una base de datos real, se simula una **consulta lenta** (`queryQueTarda`) que tarda **2 segundos** en responder (configurable con `DEMORA_QUERY_MS`) y genera datos falsos. Sobre esa consulta lenta aplicamos el patrón cache-aside:
 
 ```
 GET /:id
@@ -61,7 +61,7 @@ consulta lenta (~2 s) ──► guarda en Redis con TTL de 60 s ──► devuel
 
 - El **middleware** (`src/redis.middleware.js`) intercepta la request *antes* del handler: si la clave existe responde con el dato cacheado y el handler nunca se ejecuta.
 - La **clave de Redis es el `:id`** de la URL. Por ejemplo, `GET /42` se cachea bajo la clave `42`.
-- Al cachear se usa un **TTL de 60 segundos** (`{ EX: 60 }`): pasado ese tiempo la clave expira y la siguiente consulta vuelve a ser un cache miss.
+- Al cachear se usa un **TTL de 60 segundos** (configurable con `CACHE_TTL_SEGUNDOS`): pasado ese tiempo la clave expira y la siguiente consulta vuelve a ser un cache miss.
 
 ## Requisitos previos
 
@@ -96,11 +96,13 @@ Servicios que levanta Docker Compose:
 
 El repo incluye un `.env` de ejemplo (por ser una demo). Variables disponibles:
 
-| Variable         | Por defecto              | Descripción                          |
-| ---------------- | ------------------------ | ------------------------------------ |
-| `PORT`           | `3000`                   | Puerto donde escucha la app.         |
-| `REDIS_URL`      | `redis://localhost:6379` | URL de conexión a Redis.             |
-| `REDIS_PASSWORD` | `1qaz!QAZ`               | Contraseña de Redis.                 |
+| Variable             | Por defecto              | Descripción                                       |
+| -------------------- | ------------------------ | ------------------------------------------------- |
+| `PORT`               | `3000`                   | Puerto donde escucha la app.                      |
+| `REDIS_URL`          | `redis://localhost:6379` | URL de conexión a Redis.                          |
+| `REDIS_PASSWORD`     | `1qaz!QAZ`               | Contraseña de Redis.                              |
+| `CACHE_TTL_SEGUNDOS` | `60`                     | Segundos que vive cada clave en la caché (TTL).   |
+| `DEMORA_QUERY_MS`    | `2000`                   | Demora simulada de la "consulta lenta" (ms).      |
 
 ## Endpoints
 
