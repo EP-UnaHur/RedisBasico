@@ -5,7 +5,7 @@ const redisClient = require("./redis");
 const cacheMiddleware = require("./redis.middleware");
 const fakeData = require("./fakeData/data");
 const app = express();
-const PORT = process.env.PORT ?? 3001;
+const PORT = process.env.PORT ?? 3000;
 
 app.use(morgan("tiny"));
 app.use(express.json());

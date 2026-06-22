@@ -1,7 +1,7 @@
 const redis = require("redis");
 const redisClient = redis.createClient({
   url: process.env.REDIS_URL ?? "redis://localhost:6379",
-  password: process.env.REDIS_PASSWORD ?? "1qaz!QAZ",
+  password: process.env.REDIS_PASSWORD,
   connectTimeout: 10000,
 });
 
